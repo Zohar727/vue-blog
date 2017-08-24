@@ -1,0 +1,14 @@
+<%- include('header')%>
+<form method="post" enctype="multipart/form-data">
+	<input type="text" name="name" placeholder="请输入用户名">
+	<input type="password" name="password" placeholder="请输入密码">
+	<select name="gender">
+          <option value="m">男</option>
+          <option value="f">女</option>
+          <option value="x">保密</option>
+    </select>
+    <input type="file" name="avatar">
+    <textarea name="bio" rows="5""></textarea>
+    <input type="submit" value="注册">
+</form>
+<%- include('footer')%>
