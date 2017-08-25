@@ -5,7 +5,8 @@ var router = express.Router();
 var checkLogin = require('../middlewares/check').checkLogin;
 
 router.get('/', function (req, res, next) {
-	res.send(req.flash());
+	// res.send(req.flash());
+	res.render('posts');
 });
 
 // POST /posts 发表文章

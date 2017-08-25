@@ -3,7 +3,7 @@ module.exports = {
 	checkLogin: function checkLogin(req, res, next) {
 		// 检测用户是否登录
 		if (!req.session.user) {
-			res.flash('error', '未登录');
+			req.flash('error', '未登录');
 			return res.redirect('/signin')
 		}
 		next();

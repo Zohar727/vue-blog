@@ -23,8 +23,8 @@ app.use(session({
 	cookie: {
 		maxAge: config.session.maxAge
 	},
-	resave: true,
-	saveUninitialized: true,
+	resave: true, // 强制更新session
+	saveUninitialized: false, // 强制创建session
 	store: new MongoStore({
 		// 存储 session 至 mongodb
 		url: config.mongodb // mongodb地址
@@ -32,6 +32,12 @@ app.use(session({
 }))
 // 显示通知的中间件
 app.use(flash());
+
+// 处理表单和文件上传的中间件
+app.use(require('express-formidable')({
+	uploadDir: path.join(__dirname, 'public/img'), // 文件上传目录
+	keepExtensions: true // 保留后缀
+}));
 
 // 设置模板全局常量
 app.locals.blog = {
@@ -44,6 +50,7 @@ app.use(function (req, res, next) {
 	res.locals.user = req.session.user;
 	res.locals.success = req.flash('success').toString();
 	res.locals.error = req.flash('error').toString();
+	next();
 });
 
 // 路由
