@@ -3,7 +3,7 @@
 	<%- post.content %>
 </pre>
 <p>浏览：(<%= post.pv %>)</p>
-<p>留言：(<%= post.componentsCount %>)</p>
+<p>留言：(<%= post.commentsCount %>)</p>
 
  <% if (user && post.author._id && user._id.toString() === post.author._id.toString()) { %>
  	<div><a href="/posts/<%= post._id%>/edit">编辑</a></div>
