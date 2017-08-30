@@ -10,4 +10,10 @@ module.exports = function (app) {
 	app.use('/signout', require('./signout'));
 	// 首页路由
 	app.use('/posts', require('./posts'));
+	// 404路由
+	app.use(function (req, res) {
+		if (!res.headersSent) {
+			res.render('404');
+		}
+	});
 }
