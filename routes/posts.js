@@ -13,9 +13,10 @@ router.get('/', function (req, res, next) {
 
 	PostModel.getPosts(author)
 		.then(function(posts) {
-			res.render('posts', {
-				posts: posts
-			});
+			// res.render('posts', {
+			// 	posts: posts
+			// });
+			return res.json({status: false, data: posts});
 		})
 		.catch(next);
 
@@ -68,10 +69,17 @@ router.get('/:postId', function (req, res, next) {
 			throw new Error('该文章不存在');
 		}
 
-		res.render('post', {
-			post: post,
-			comments: comments
-		});
+		// res.render('post', {
+		// 	post: post,
+		// 	comments: comments
+		// });
+		return res.json({
+			status: true,
+			data: {
+				post: post,
+				comments: comments
+			}
+		})
 	})
 	.catch(next);
 });
@@ -86,13 +94,28 @@ router.get('/:postId/edit', checkLogin, function (req, res, next) {
 		.then((post) => {
 			if (!post) {
 				throw new Error('该文章不存在');
+				return res.json({
+					status: false,
+					msg: '文章不存在'
+				})
 			}
 			if (author.toString() !== post.author._id.toString()) {
 				throw new Error('权限不足');
+				return res.json({
+					status: false,
+					msg: '权限不足'
+				})
 			}
-			res.render('edit', {
-				post: post
-			});
+			// res.render('edit', {
+			// 	post: post
+			// });
+			return res.json({
+				status: true,
+				data: {
+					post: post,
+				}
+			})
+
 		})
 		.catch(next);
 });
@@ -109,7 +132,11 @@ router.post('/:postId/edit', checkLogin, function (req, res, next) {
 		.then(() => {
 			req.flash('success', '编辑文章成功');
 			// 编辑成功后跳转
-			res.redirect(`/posts/${postId}`);
+			// res.redirect(`/posts/${postId}`);
+			return res.json({
+				status: true,
+				msg: '编辑文章成功'
+			})
 		})
 		.catch(next);
 });
@@ -124,7 +151,11 @@ router.get('/:postId/remove', checkLogin, function (req, res, next) {
 		.then(() => {
 			req.flash('success', '删除文章成功');
 			// 删除成功后跳转
-			res.redirect('/posts');
+			// res.redirect('/posts');
+			res.json({
+				status: true,
+				msg: '删除文章成功'
+			})
 		})
 		.catch(next);
 });
