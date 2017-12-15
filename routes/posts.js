@@ -5,6 +5,7 @@ var CommentModel = require('../models/comments');
 // 文章页路由
 // 权限检测
 var checkLogin = require('../middlewares/check').checkLogin;
+var checkToken = require('../middlewares/check').checkToken;
 
 router.get('/', function (req, res, next) {
 	// res.send(req.flash());
@@ -66,12 +67,16 @@ router.get('/:postId', function (req, res, next) {
 		var comments = result[1];
 		if (!post) {
 			throw new Error('该文章不存在');
-		}
-
-		res.render('post', {
-			post: post,
-			comments: comments
-		});
+    }
+    let docs = {
+      post: post,
+      comments: comments
+    }
+    res.send(docs);
+		// res.render('post', {
+		// 	post: post,
+		// 	comments: comments
+		// });
 	})
 	.catch(next);
 });

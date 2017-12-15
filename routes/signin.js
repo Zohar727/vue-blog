@@ -6,6 +6,7 @@ var router = express.Router();
 
 var UserModel = require('../models/users');
 var checkNotLogin = require('../middlewares/check').checkNotLogin;
+var createToken = require('../middlewares/check').createToken;
 
 // GET /signin 登录页
 router.get('/', checkNotLogin, function (req, res, next) {
@@ -34,9 +35,13 @@ router.post('/', checkNotLogin, function (req, res, next) {
 			req.flash('success', '登录成功');
 			// 用户信息写入session
 			delete user.password;
-			req.session.user = user;
+      req.session.user = user;
+      res.json({
+        code: 200,
+        token: createToken(name)
+      })
 			// 跳至主页
-			res.redirect('/posts');
+			// res.redirect('/posts');
 		})
 		.catch(next);
 });
