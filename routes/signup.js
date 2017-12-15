@@ -42,14 +42,12 @@ router.post('/', checkNotLogin, function(req, res, next) {
 			req.session.user = user;
 			req.flash('success', '注册成功');
 			// 跳转首页
-			// res.redirect('/posts');
-			return res.json({status: true, msg: '注册成功'})
+			res.redirect('/posts');
 		})
 		.catch(function (e) {
 			if (e.message.match('E1100 duplicte key')) {
 				req.flash('error', '用户名已被占用');
-				// return res.redirect('/signup');
-				return res.json({status: false, msg: '用户名已被占用'});
+				return res.redirect('/signup');
 			}
 			next(e);
 		});
