@@ -103,7 +103,7 @@ module.exports = {
 			.then((res) => {
 				// 文章删除后再删除所有留言
 				if (res.result.ok && res.result.n > 0) {
-					return CommentModel.delCommentsByPostId(postId);
+					return CommentModel.delCommentByPostId(postId);
 				}
 			});
 	}

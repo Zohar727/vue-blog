@@ -38,7 +38,8 @@ router.post('/', checkNotLogin, function (req, res, next) {
       req.session.user = user;
       res.json({
         code: 200,
-        token: createToken(name)
+        token: createToken(name),
+        user: user
       })
 			// 跳至主页
 			// res.redirect('/posts');

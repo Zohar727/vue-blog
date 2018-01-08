@@ -19,6 +19,7 @@ module.exports = {
 		next();
   },
   
+  // 生成token
   createToken: function (id) {
     const token = jwt.sign({
                     data: id
@@ -34,14 +35,14 @@ module.exports = {
         // var decoded = jwt.decode(token);
         // 额..这里怎么会是小于..
         if (decoded.exp < Date.now()/1000) {
-          res.send({
-            code: 401,
-            message: '登录过期'
-          })
+          return res.status(401).send('token 过期')
         }
       }catch(e){
-        res.send(e);
+        return res.status(401).send('invailed token')
       } 
+    } else {
+      //检测未登录
+      return res.redirect('/signin')
     }
     next();
   }

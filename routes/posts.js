@@ -7,6 +7,7 @@ var CommentModel = require('../models/comments');
 var checkLogin = require('../middlewares/check').checkLogin;
 var checkToken = require('../middlewares/check').checkToken;
 
+// 首页获取所有文章
 router.get('/', function (req, res, next) {
 	// res.send(req.flash());
 	// res.render('posts');
@@ -16,7 +17,8 @@ router.get('/', function (req, res, next) {
 		.then(function(posts) {
 			res.render('posts', {
 				posts: posts
-			});
+      });
+      // res.send(posts);
 		})
 		.catch(next);
 
@@ -120,16 +122,20 @@ router.post('/:postId/edit', checkLogin, function (req, res, next) {
 });
 
 // GET /posts/:postId/remove 删除一篇文章
-router.get('/:postId/remove', checkLogin, function (req, res, next) {
-	// res.send(req.flash());
+router.get('/:postId/remove', checkToken, function (req, res, next) {
+  // res.send(req.flash());
+  console.log(req);
 	var postId = req.params.postId;
-	var author = req.session.user._id;
+	var author = req.query.userId;
 
 	PostModel.delPostById(postId, author)
 		.then(() => {
-			req.flash('success', '删除文章成功');
+      res.send({
+        msg: '删除成功'
+      })
+			// req.flash('success', '删除文章成功');
 			// 删除成功后跳转
-			res.redirect('/posts');
+			// res.redirect('/posts');
 		})
 		.catch(next);
 });
